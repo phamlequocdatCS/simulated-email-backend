@@ -37,8 +37,8 @@ pydantic==2.10.3
 pydantic_core==2.27.1
 PyJWT==2.10.1
 pyOpenSSL==24.3.0
-python-magic==0.4.27
-python-magic-bin==0.4.14
+python-magic
+python-magic-bin
 redis==5.2.0
 requests==2.32.3
 service-identity==24.2.0

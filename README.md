@@ -71,3 +71,8 @@ Start Daphne
 daphne -b 0.0.0.0 -p $PORT GotMail.asgi:application
 ```
 
+Start command
+
+```cmd
+python manage.py collectstatic --noinput && daphne -b 0.0.0.0 -p $PORT GotMail.asgi:application
+```

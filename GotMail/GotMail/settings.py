@@ -184,3 +184,22 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = gmail_app_email
 EMAIL_HOST_PASSWORD = gmail_app_password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+LOGGING = {
+   'version': 1,
+   'disable_existing_loggers': False,
+   'handlers': {
+      'file': {
+         'level': 'DEBUG',
+         'class': 'logging.FileHandler',
+         'filename': '/tmp/debug.log',
+      },
+   },
+   'loggers': {
+      'django': {
+         'handlers': ['file'],
+         'level': 'DEBUG',
+         'propagate': True,
+      },
+   },
+}

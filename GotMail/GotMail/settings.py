@@ -126,6 +126,8 @@ DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 GS_BUCKET_NAME = os.environ.get("GCLOUD_BUCKET")
 GS_LOCATION = "media"  # Optional: store media files in a specific folder
 MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/media/"
+GS_QUERYSTRING_AUTH = False
+GS_DEFAULT_ACL = None # type: ignore
 
 # Optional: Load credentials from an environment variable or Render's Secret File
 

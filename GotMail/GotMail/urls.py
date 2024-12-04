@@ -44,9 +44,6 @@ from gotmail_service.views import (
     Verify2FAView,
     VerifyCodeView,
 )
-
-from GotMail import settings
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/login/", auth_views.LoginView.as_view(), name="login"),

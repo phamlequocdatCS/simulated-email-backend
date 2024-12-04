@@ -156,7 +156,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "10.0.2.2",
-    "https://simulated-email-backend.onrender.com",
+    "simulated-email-backend.onrender.com",
 ]  # type: ignore
 
 CORS_ALLOW_METHODS = [  # required if making other types of requests besides GET

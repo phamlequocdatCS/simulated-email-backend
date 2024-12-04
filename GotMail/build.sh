@@ -12,4 +12,4 @@ python manage.py collectstatic --no-input
 python manage.py migrate
 
 # Load the dumped data
-python manage.py loaddata dumped_data.json
+python manage.py loaddata --exclude auth.permission --exclude contenttypes dumped_data.json

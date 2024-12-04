@@ -135,10 +135,12 @@ if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
     CORS_ALLOWED_ORIGINS = [
-        "https://your-app.onrender.com",
+        "https://simulated-email-backend.onrender.com",
     ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = [
+    "https://simulated-email-backend.onrender.com",
+]
 
 CORS_ALLOW_METHODS = [  # required if making other types of requests besides GET
     "DELETE",

@@ -138,17 +138,17 @@ REST_FRAMEWORK = {
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
-    CORS_ALLOWED_ORIGINS = [
+    CSRF_TRUSTED_ORIGINS = [
         "https://simulated-email-backend.onrender.com",
         "http://127.0.0.1:8000",
-        "http://localhost:54391",
+        "http://localhost",
         "http://10.0.2.2",
     ]
 
-CSRF_TRUSTED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = [
     "https://simulated-email-backend.onrender.com",
     "http://127.0.0.1:8000",
-    "http://localhost:54391",
+    "http://localhost",
     "http://10.0.2.2",
 ]
 

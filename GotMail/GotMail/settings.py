@@ -140,7 +140,7 @@ if DEBUG:
 else:
     CSRF_TRUSTED_ORIGINS = [
         "https://simulated-email-backend.onrender.com",
-        "https://simulated-email-backend.onrender.com" "http://127.0.0.1:8000",
+        "http://127.0.0.1:8000",
         "http://localhost",
         "http://10.0.2.2",
     ]
@@ -150,6 +150,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost",
     "http://10.0.2.2",
+    "http://localhost:8000/",
 ]
 
 CORS_ALLOWED_ORIGINS = [

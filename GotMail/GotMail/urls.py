@@ -88,4 +88,4 @@ urlpatterns = [
     path("auth/forget_password/", ForgetPasswordView.as_view(), name="forget_password"),
     path("auth/2fa/", Enable2FAView.as_view(), name="enable_2fa"),
     path("auth/2fa_verify/", Verify2FAView.as_view(), name="verify_2fa"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

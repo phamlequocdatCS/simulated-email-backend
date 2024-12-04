@@ -1,11 +1,14 @@
 import os
 from pathlib import Path
+
 import dj_database_url
+from google.oauth2 import service_account
+
 from .super_secrets import (
     DJ_DATABASE_URL,
     DJANGO_SECRET_KEY,
-    gmail_app_password,
     gmail_app_email,
+    gmail_app_password,
 )
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +30,7 @@ INSTALLED_APPS = [
     "gotmail_service",
     "channels",
     "rest_framework",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -103,9 +107,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = "/static/"
-MEDIA_URL = "/media/"
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 ASGI_APPLICATION = "GotMail.asgi.application"
@@ -119,7 +120,18 @@ STATIC_ROOT = BASE_DIR / "static"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_ROOT = "user_res"
+
+# Google Cloud Storage configuration for MEDIA
+DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+GS_BUCKET_NAME = os.environ.get("GCLOUD_BUCKET")
+GS_LOCATION = "media"  # Optional: store media files in a specific folder
+MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/media/"
+
+# Optional: Load credentials from an environment variable or Render's Secret File
+
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "/etc/secrets/gcs-key.json")
+)
 
 
 REST_FRAMEWORK = {

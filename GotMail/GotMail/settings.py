@@ -66,9 +66,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [
-                ("default", os.environ.get("REDIS_URL"), os.environ.get("REDIS_PORT"))
-            ],
+            "hosts": [(os.environ.get("REDIS_URL"), os.environ.get("REDIS_PORT"))],
         },
     },
 }
@@ -136,18 +134,15 @@ REST_FRAMEWORK = {
 
 CSRF_TRUSTED_ORIGINS = [
     "https://simulated-email-backend.onrender.com",
-    "https://phamlequocdatcs.github.io"
+    "https://phamlequocdatcs.github.io",
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "https://simulated-email-backend.onrender.com",
-    "https://phamlequocdatcs.github.io"
+    "https://phamlequocdatcs.github.io",
 ]
 
-ALLOWED_HOSTS = [
-    "simulated-email-backend.onrender.com",
-    "phamlequocdatcs.github.io"
-]
+ALLOWED_HOSTS = ["simulated-email-backend.onrender.com", "phamlequocdatcs.github.io"]
 
 # required if making other types of requests besides GET
 CORS_ALLOW_METHODS = [

@@ -136,14 +136,17 @@ REST_FRAMEWORK = {
 
 CSRF_TRUSTED_ORIGINS = [
     "https://simulated-email-backend.onrender.com",
+    "https://phamlequocdatcs.github.io"
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "https://simulated-email-backend.onrender.com",
+    "https://phamlequocdatcs.github.io"
 ]
 
 ALLOWED_HOSTS = [
     "simulated-email-backend.onrender.com",
+    "phamlequocdatcs.github.io"
 ]
 
 # required if making other types of requests besides GET

@@ -1,11 +1,17 @@
 import os
 from pathlib import Path
 import dj_database_url
+from .super_secrets import (
+    DJ_DATABASE_URL,
+    DJANGO_SECRET_KEY,
+    gmail_app_password,
+    gmail_app_email,
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
-# ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1").split(",")
 
 # Application definition
 
@@ -60,19 +66,12 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            # "hosts": [("127.0.0.1", 6380)], # Local
-            "hosts": [os.environ.get("REDIS_URL")],  # Use Render's Redis URL
+            "hosts": [
+                ("default", os.environ.get("REDIS_URL"), os.environ.get("REDIS_PORT"))
+            ],
         },
     },
 }
-
-from .super_secrets import (
-    DB_PASSWORD,
-    DJ_DATABASE_URL,
-    DJANGO_SECRET_KEY,
-    gmail_app_password,
-    gmail_app_email,
-)
 
 DATABASES = {
     "default": dj_database_url.config(default=DJ_DATABASE_URL, conn_max_age=600)
@@ -107,8 +106,8 @@ if DEBUG:
     STATIC_URL = "/static/"
     MEDIA_URL = "/media/"
 else:
-    STATIC_URL = "https://your-app.onrender.com/static/"
-    MEDIA_URL = "https://your-app.onrender.com/media/"
+    STATIC_URL = "https://simulated-email-backend.onrender.com/static/"
+    MEDIA_URL = "https://simulated-email-backend.onrender.com/media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -134,40 +133,21 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
-if DEBUG:
-    CORS_ALLOW_ALL_ORIGINS = True
-else:
-    CSRF_TRUSTED_ORIGINS = [
-        "https://simulated-email-backend.onrender.com",
-        "http://127.0.0.1:8000",
-        "http://localhost",
-        "http://10.0.2.2",
-    ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://simulated-email-backend.onrender.com",
-    "http://127.0.0.1:8000",
-    "http://localhost",
-    "http://10.0.2.2",
-    "http://localhost:8000/",
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "https://simulated-email-backend.onrender.com",
-    "http://127.0.0.1:8000",
-    "http://localhost",
-    "http://10.0.2.2",
 ]
 
 ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "10.0.2.2",
     "simulated-email-backend.onrender.com",
-]  # type: ignore
+]
 
-CORS_ALLOW_METHODS = [  # required if making other types of requests besides GET
+# required if making other types of requests besides GET
+CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
     "OPTIONS",

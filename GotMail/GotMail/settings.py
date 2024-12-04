@@ -120,21 +120,24 @@ STATIC_ROOT = BASE_DIR / "static"
 STATIC_URL = "/static/"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+        "OPTIONS": {
+            "bucket_name": os.environ.get("GCLOUD_BUCKET"),
+            "credentials": service_account.Credentials.from_service_account_file(
+                os.environ.get(
+                    "GOOGLE_APPLICATION_CREDENTIALS", "/etc/secrets/gcs-key.json"
+                )
+            ),
+            "location": "media",
+            "default_acl": None,
+            "querystring_auth": False,
+        },
+    },
+}
 
-# Google Cloud Storage configuration for MEDIA
-DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-GS_BUCKET_NAME = os.environ.get("GCLOUD_BUCKET")
-GS_LOCATION = "media"  # Optional: store media files in a specific folder
-MEDIA_URL = f"https://storage.googleapis.com/{GS_BUCKET_NAME}/media/"
-GS_QUERYSTRING_AUTH = False
-GS_DEFAULT_ACL = None # type: ignore
-
-# Optional: Load credentials from an environment variable or Render's Secret File
-
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "/etc/secrets/gcs-key.json")
-)
-
+MEDIA_URL = f'https://storage.googleapis.com/{os.environ.get("GCLOUD_BUCKET")}/media/'
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (

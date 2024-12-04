@@ -67,10 +67,10 @@ class UserSerializer(serializers.ModelSerializer):
             return (
                 obj.profile.profile_picture.url
                 if obj.profile.profile_picture
-                else "/user_res/profile_pictures/dog.png"
+                else "https://storage.googleapis.com/gottenmail/dog.png"
             )
         except UserProfile.DoesNotExist:
-            return "/user_res/profile_pictures/dog.png"
+            return "https://storage.googleapis.com/gottenmail/dog.png"
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -362,7 +362,7 @@ class EmailSerializer(serializers.ModelSerializer):
             sender_profile.profile_picture.url
             if sender_profile and sender_profile.profile_picture
             # else None
-            else "/user_res/profile_pictures/dog.png"
+            else "https://storage.googleapis.com/gottenmail/dog.png"
         )
 
 

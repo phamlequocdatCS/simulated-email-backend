@@ -118,7 +118,7 @@ LOGOUT_URL = "logout"
 
 STATIC_ROOT = BASE_DIR / "static"
 STATIC_URL = "/static/"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+MEDIA_URL = f"https://storage.googleapis.com/{os.environ.get('GCLOUD_BUCKET')}/media/"
 
 STORAGES = {
     "default": {
@@ -135,9 +135,11 @@ STORAGES = {
             "querystring_auth": False,
         },
     },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
 }
 
-MEDIA_URL = f'https://storage.googleapis.com/{os.environ.get("GCLOUD_BUCKET")}/media/'
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (

@@ -1,10 +1,11 @@
 import os
 from pathlib import Path
 import dj_database_url
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1").split(",")
+# ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1").split(",")
 
 # Application definition
 
@@ -65,13 +66,16 @@ CHANNEL_LAYERS = {
     },
 }
 
-from .super_secrets import DB_PASSWORD, DJ_DATABASE_URL, DJANGO_SECRET_KEY, gmail_app_password, gmail_app_email
+from .super_secrets import (
+    DB_PASSWORD,
+    DJ_DATABASE_URL,
+    DJANGO_SECRET_KEY,
+    gmail_app_password,
+    gmail_app_email,
+)
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=DJ_DATABASE_URL,
-        conn_max_age=600
-    )
+    "default": dj_database_url.config(default=DJ_DATABASE_URL, conn_max_age=600)
 }
 
 SECRET_KEY = DJANGO_SECRET_KEY
@@ -136,11 +140,24 @@ if DEBUG:
 else:
     CORS_ALLOWED_ORIGINS = [
         "https://simulated-email-backend.onrender.com",
+        "http://127.0.0.1:8000",
+        "http://localhost:54391",
+        "http://10.0.2.2",
     ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://simulated-email-backend.onrender.com",
+    "http://127.0.0.1:8000",
+    "http://localhost:54391",
+    "http://10.0.2.2",
 ]
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "10.0.2.2",
+    "https://simulated-email-backend.onrender.com",
+]  # type: ignore
 
 CORS_ALLOW_METHODS = [  # required if making other types of requests besides GET
     "DELETE",
@@ -160,10 +177,10 @@ CORS_ALLOW_HEADERS = [
 
 CORS_ALLOW_CREDENTIALS = True  # Important if you're using cookies or authentication that relies on credentials
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = gmail_app_email
-EMAIL_HOST_PASSWORD = gmail_app_password  
+EMAIL_HOST_PASSWORD = gmail_app_password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

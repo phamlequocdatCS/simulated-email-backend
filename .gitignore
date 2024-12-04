@@ -1,6 +1,5 @@
 venv/
 */__pycache__/*
-GotMail/GotMail/super_secrets.py
 GotMail/static
 GotMail/user_res/*
 __pycache__

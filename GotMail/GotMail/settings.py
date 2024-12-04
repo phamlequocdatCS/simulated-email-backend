@@ -103,12 +103,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-if DEBUG:
-    STATIC_URL = "/static/"
-    MEDIA_URL = "/media/"
-else:
-    STATIC_URL = "https://simulated-email-backend.onrender.com/static/"
-    MEDIA_URL = "https://simulated-email-backend.onrender.com/media/"
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

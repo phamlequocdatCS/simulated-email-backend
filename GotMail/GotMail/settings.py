@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
@@ -64,17 +65,13 @@ CHANNEL_LAYERS = {
     },
 }
 
-from .super_secrets import DB_PASSWORD, DJANGO_SECRET_KEY, gmail_app_password, gmail_app_email
+from .super_secrets import DB_PASSWORD, DJ_DATABASE_URL, DJANGO_SECRET_KEY, gmail_app_password, gmail_app_email
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "gotmailDB",
-        "USER": "postgres",
-        "PASSWORD": DB_PASSWORD,
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
+    'default': dj_database_url.config(
+        default=DJ_DATABASE_URL,
+        conn_max_age=600
+    )
 }
 
 SECRET_KEY = DJANGO_SECRET_KEY

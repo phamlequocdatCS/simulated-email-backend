@@ -140,10 +140,17 @@ if DEBUG:
 else:
     CSRF_TRUSTED_ORIGINS = [
         "https://simulated-email-backend.onrender.com",
-        "http://127.0.0.1:8000",
+        "https://simulated-email-backend.onrender.com" "http://127.0.0.1:8000",
         "http://localhost",
         "http://10.0.2.2",
     ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://simulated-email-backend.onrender.com",
+    "http://127.0.0.1:8000",
+    "http://localhost",
+    "http://10.0.2.2",
+]
 
 CORS_ALLOWED_ORIGINS = [
     "https://simulated-email-backend.onrender.com",
@@ -186,20 +193,20 @@ EMAIL_HOST_PASSWORD = gmail_app_password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 LOGGING = {
-   'version': 1,
-   'disable_existing_loggers': False,
-   'handlers': {
-      'file': {
-         'level': 'DEBUG',
-         'class': 'logging.FileHandler',
-         'filename': '/tmp/debug.log',
-      },
-   },
-   'loggers': {
-      'django': {
-         'handlers': ['file'],
-         'level': 'DEBUG',
-         'propagate': True,
-      },
-   },
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "/tmp/debug.log",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
 }

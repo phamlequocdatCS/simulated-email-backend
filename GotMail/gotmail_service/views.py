@@ -84,9 +84,7 @@ class BaseUserSettingsView(APIView):
         Returns:
             UserSettings: User settings object
         """
-        if User.objects.get(user=self.request.user):
-            return UserSettings.objects.get_or_create(user=self.request.user)[0]
-        return None
+        return UserSettings.objects.get_or_create(user=self.request.user)[0]
 
 
     def handle_settings_update(

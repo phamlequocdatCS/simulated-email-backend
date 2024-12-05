@@ -177,42 +177,62 @@ class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        serializer = LoginSerializer(data=request.data, context={"request": request})
-        if serializer.is_valid():
-            user = serializer.validated_data["user"]
+        # Convert phone number to string to ensure compatibility
+        request_data = request.data.copy()
+        request_data["phone_number"] = str(request_data.get("phone_number", ""))
 
-            # Check if 2FA is enabled
-            try:
-                user_profile = UserProfile.objects.get(user=user)
-                if user_profile.two_factor_enabled:
-                    # Generate and send 2FA code
-                    user.generate_verification_code()
+        serializer = LoginSerializer(data=request_data, context={"request": request})
 
-                    # Send verification email
-                    email = create_2fa_email(
-                        request, user, user.email, user.verification_code
-                    )
-                    email.send(fail_silently=False)
+        try:
+            if serializer.is_valid(raise_exception=True):
+                user = serializer.validated_data["user"]
 
-                    print(email)
+                # Check if 2FA is enabled
+                try:
+                    user_profile = UserProfile.objects.get(user=user)
+                    if user_profile.two_factor_enabled:
+                        # Generate and send 2FA code
+                        user.generate_verification_code()
 
-                    return Response(
-                        {"requires_2fa": True, "phone_number": user.phone_number},
-                        status=status.HTTP_206_PARTIAL_CONTENT,
-                    )
-            except UserProfile.DoesNotExist:
-                pass
+                        try:
+                            # Send verification email
+                            email = create_2fa_email(
+                                request, user, user.email, user.verification_code
+                            )
+                            email.send(fail_silently=False)
 
-            # Regular login flow
-            user.generate_session_token()
-            login(request, user)
-            return Response(
-                {
-                    "user": UserSerializer(user).data,
-                    "session_token": user.session_token,
-                },
-                status=status.HTTP_200_OK,
-            )
+                            return Response(
+                                {
+                                    "requires_2fa": True,
+                                    "phone_number": user.phone_number,
+                                },
+                                status=status.HTTP_206_PARTIAL_CONTENT,
+                            )
+                        except Exception as email_error:
+                            print(f"2FA email sending failed: {email_error}")
+                            return Response(
+                                {"detail": "Failed to send verification code"},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            )
+
+                except UserProfile.DoesNotExist:
+                    pass
+
+                # Regular login flow
+                user.generate_session_token()
+                login(request, user)
+                return Response(
+                    {
+                        "user": UserSerializer(user).data,
+                        "session_token": user.session_token,
+                    },
+                    status=status.HTTP_200_OK,
+                )
+
+        except serializer.ValidationError as e:
+            # More detailed error handling
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

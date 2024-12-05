@@ -77,14 +77,17 @@ class BaseUserSettingsView(APIView):
     authentication_classes = [SessionTokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get_or_create_user_settings(self) -> UserSettings:
+    def get_or_create_user_settings(self):
         """
         Get or create UserSettings for the authenticated user.
 
         Returns:
             UserSettings: User settings object
         """
-        return UserSettings.objects.get_or_create(user=self.request.user)[0]
+        if User.objects.get(user=self.request.user):
+            return UserSettings.objects.get_or_create(user=self.request.user)[0]
+        return None
+
 
     def handle_settings_update(
         self,
@@ -105,13 +108,14 @@ class BaseUserSettingsView(APIView):
         """
         try:
             user_settings = self.get_or_create_user_settings()
-            serializer = serializer_class(user_settings, data=data, partial=partial)
+            if user_settings:
+                serializer = serializer_class(user_settings, data=data, partial=partial)
 
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
 
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as e:
             return Response(
@@ -211,7 +215,7 @@ class LoginView(APIView):
                         except Exception as email_error:
                             print(f"2FA email sending failed: {email_error}")
                             return Response(
-                                {"detail": "Failed to send verification code"},
+                                {"detail": f"Failed to send verification code, {email_error}"},
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             )
 

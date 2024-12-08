@@ -48,7 +48,7 @@ Project structure:
 
 Example data is available in `dumped_data.json`, generated with `python GotMail\manage.py dumpdata > dumped_data.json`
 
-To load, `python GotMail\manage.py loaddata < dumped_data.json`
+To load, `loaddata --exclude auth.permission --exclude contenttypes dumped_data.json`
 
 Database:
 
